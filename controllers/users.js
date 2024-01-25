@@ -6,9 +6,10 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const AlreadyExistsError = require('../errors/AlreadyExistsError');
 
+// Создать пользователя
 module.exports.createUser = (req, res, next) => {
   const {
-    email, password, name
+    email, password, name,
   } = req.body;
 
   bcrypt.hash(password, 10)
@@ -33,12 +34,7 @@ module.exports.createUser = (req, res, next) => {
     });
 };
 
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch((err) => next(err));
-};
-
+// Универсальная функция для поиска пользователя по id
 const findUserById = (req, res, userData, next) => {
   User.findById(userData)
     .then((user) => {
@@ -57,13 +53,15 @@ const findUserById = (req, res, userData, next) => {
     });
 };
 
+// Получить информацию о текущем пользователе
 module.exports.getUsersMe = (req, res, next) => {
   const userData = req.user._id;
   findUserById(req, res, userData, next);
 };
 
+// Обновить данные текущего пользователя
 module.exports.updateUsersData = (req, res, next) => {
-  const {  email, name } = req.body;
+  const { email, name } = req.body;
 
   User.findByIdAndUpdate(
     req.user._id,
@@ -89,6 +87,7 @@ module.exports.updateUsersData = (req, res, next) => {
     });
 };
 
+// Авторизация пользователя
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 

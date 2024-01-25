@@ -10,13 +10,6 @@ module.exports.createUserValidation = celebrate({
   }),
 });
 
-module.exports.userDataValidation = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    name: Joi.string().required().min(2).max(30),
-  }),
-});
-
 module.exports.loginValidation = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -24,7 +17,14 @@ module.exports.loginValidation = celebrate({
   }),
 });
 
-module.exports.createMovieValidation = celebrate({
+module.exports.userDataValidation = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    name: Joi.string().required().min(2).max(30),
+  }),
+});
+
+module.exports.createCardValidation = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
@@ -34,15 +34,14 @@ module.exports.createMovieValidation = celebrate({
     image: Joi.string().required().regex(regex),
     trailerLink: Joi.string().required().regex(regex),
     thumbnail: Joi.string().required().regex(regex),
-    owner: Joi.string().required().length(24).hex(),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),
 });
 
-module.exports.deleteMovieValidation = celebrate({
+module.exports.deleteCardValidation = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().required().length(24).hex(),
+    cardId: Joi.string().required().length(24).hex(),
   }),
 });
