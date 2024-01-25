@@ -18,3 +18,7 @@
 ## Сссылка на репозиторий проекта
 
 https://github.com/DezmonDND/movies-explorer-api
+
+## Адрес домена сервера
+
+https://api.movies.denedoseikin.nomoredomainsmonster.ru
