@@ -2,18 +2,18 @@ const { default: mongoose } = require('mongoose');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
-const Card = require('../models/card');
+const Movie = require('../models/movie');
 
 // Получить фильмы текущего пользователя по id
-module.exports.getCards = (req, res, next) => {
+module.exports.getMovies = (req, res, next) => {
   const owner = req.user._id;
-  Card.find({ owner })
-    .then((cards) => res.send(cards))
+  Movie.find({ owner })
+    .then((movies) => res.send(movies))
     .catch((err) => next(err));
 };
 
 // Создать фильм
-module.exports.createCard = (req, res, next) => {
+module.exports.createMovie = (req, res, next) => {
   const {
     country,
     director,
@@ -29,7 +29,7 @@ module.exports.createCard = (req, res, next) => {
   } = req.body;
   const owner = req.user._id;
 
-  Card.create({
+  Movie.create({
     country,
     director,
     duration,
@@ -43,7 +43,7 @@ module.exports.createCard = (req, res, next) => {
     nameEN,
     owner,
   })
-    .then((card) => res.status(201).send(card))
+    .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError('Переданы некорректные данные при создании карточки.'));
@@ -54,18 +54,18 @@ module.exports.createCard = (req, res, next) => {
 };
 
 // Удалить фильм
-module.exports.deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
+module.exports.deleteMovie = (req, res, next) => {
+  const { movieId } = req.params;
   const { _id: userId } = req.user;
 
-  Card.findById(cardId)
-    .then((card) => {
-      if (!card) {
+  Movie.findById(movieId)
+    .then((movie) => {
+      if (!movie) {
         next(new NotFoundError('Передан несуществующий _id карточки.'));
-      } else if (userId !== card.owner.toString()) {
+      } else if (userId !== movie.owner.toString()) {
         next(new ForbiddenError('Невозможно удалить карточку.'));
       } else {
-        card.deleteOne()
+        movie.deleteOne()
           .then(() => res.status(200).send({ message: 'Карточка удалена' }));
       }
     })

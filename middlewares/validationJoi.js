@@ -24,7 +24,7 @@ module.exports.userDataValidation = celebrate({
   }),
 });
 
-module.exports.createCardValidation = celebrate({
+module.exports.createMovieValidation = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
@@ -40,8 +40,8 @@ module.exports.createCardValidation = celebrate({
   }),
 });
 
-module.exports.deleteCardValidation = celebrate({
+module.exports.deleteMovieValidation = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().required().length(24).hex(),
+    movieId: Joi.string().required().length(24).hex(),
   }),
 });

@@ -1,5 +1,5 @@
 const routes = require('express').Router();
-const cardsRouter = require('./cards');
+const moviesRouter = require('./movies');
 const usersRouter = require('./users');
 const auth = require('../middlewares/auth');
 const { createUser, login } = require('../controllers/users');
@@ -9,6 +9,6 @@ routes.post('/signin', loginValidation, login);
 routes.post('/signup', createUserValidation, createUser);
 
 routes.use('/users', auth, usersRouter);
-routes.use('/movies', auth, cardsRouter);
+routes.use('/movies', auth, moviesRouter);
 
 module.exports = routes;
