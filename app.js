@@ -8,16 +8,17 @@ const { errors } = require('celebrate');
 const cors = require('cors');
 const routes = require('./routes/index');
 const { ServerErrorHandler } = require('./errors/errorHandlers/ServerErrorHandler');
-const { NotFoundErrorHandler } = require('./errors/errorHandlers/NotFoundErrorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { DB_ADDRESS_DEV } = require('./utils/constants');
 
-const { PORT = 3000, DB_ADDRESS = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
+const { PORT = 3000, DB_ADDRESS } = process.env;
+const { NODE_ENV } = process.env;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-mongoose.connect(DB_ADDRESS, {
+mongoose.connect(NODE_ENV === 'production' ? DB_ADDRESS : DB_ADDRESS_DEV, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   family: 4,
@@ -26,7 +27,6 @@ mongoose.connect(DB_ADDRESS, {
 app.use(requestLogger);
 
 app.use(routes);
-app.use('*', NotFoundErrorHandler);
 app.use(errorLogger);
 app.use(errors());
 app.use(ServerErrorHandler);
