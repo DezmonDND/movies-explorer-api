@@ -74,9 +74,8 @@ module.exports.updateUsersData = (req, res, next) => {
     .then((user) => {
       if (!user) {
         next(new NotFoundError('Пользователь по указанному _id не найден.'));
-      } else {
-        res.status(200).send(user);
       }
+      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {

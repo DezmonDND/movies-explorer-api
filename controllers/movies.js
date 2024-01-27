@@ -66,7 +66,8 @@ module.exports.deleteMovie = (req, res, next) => {
         next(new ForbiddenError('Невозможно удалить карточку.'));
       } else {
         movie.deleteOne()
-          .then(() => res.status(200).send({ message: 'Карточка удалена' }));
+          .then(() => res.status(200).send({ message: 'Карточка удалена' }))
+          .catch((err) => next(err));
       }
     })
     .catch((err) => {
