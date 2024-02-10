@@ -58,7 +58,7 @@ module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   const { _id: userId } = req.user;
 
-  Movie.findOneAndDelete(movieId)
+  Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
         next(new NotFoundError('Передан несуществующий _id карточки.'));
